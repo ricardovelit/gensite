@@ -1,0 +1,11 @@
+{
+  "name": "Generador de Código AI",
+  "version": "0.1.0",
+  "description": "Sistema generador de código para sitios web",
+  "supported_languages": ["HTML", "CSS", "JavaScript", "Python", "PHP"],
+  "default_template": "basic_web",
+  "ui_config": {
+    "theme": "dark",
+    "layout": "split_view"
+  }
+}
