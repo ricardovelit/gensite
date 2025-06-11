@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from supabase import create_client
 import os
 from typing import Dict, Optional, Tuple
@@ -70,3 +71,6 @@ def require_auth(handler):
         return await handler(request, *args, **kwargs)
     
     return wrapper
+=======
+\
+>>>>>>> 90d22681d2c30acb385206e300b3ba63575d2b65

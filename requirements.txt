@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Archivo de dependencias del proyecto
 
 # Ejemplo:
@@ -27,3 +28,10 @@ pytest==7.4.4
 black==23.12.1
 isort==5.13.2
 mypy==1.8.0
+=======
+# Archivo de dependencias del proyecto
+
+# Ejemplo:
+# numpy==1.24.3
+# pandas==2.0.1
+>>>>>>> 90d22681d2c30acb385206e300b3ba63575d2b65

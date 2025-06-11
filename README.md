@@ -52,6 +52,7 @@ export default tseslint.config({
   },
 })
 ```
+<<<<<<< HEAD
 
 # GENSITE AI Website Builder
 
@@ -93,3 +94,5 @@ uvicorn main:app --reload
 ---
 
 ¿Dudas? Consulta el código en `main.py` o pide ayuda en el chat de soporte.
+=======
+>>>>>>> 90d22681d2c30acb385206e300b3ba63575d2b65

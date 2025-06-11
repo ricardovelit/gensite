@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Punto de entrada principal del proyecto
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
@@ -340,3 +341,12 @@ async def startup_event():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+=======
+# Punto de entrada principal del proyecto
+
+def main():
+    print("¡Hola desde el nuevo proyecto Python!")
+
+if __name__ == "__main__":
+    main()
+>>>>>>> 90d22681d2c30acb385206e300b3ba63575d2b65

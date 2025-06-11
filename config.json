@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "Generador de Código AI",
   "version": "0.1.0",
@@ -8,4 +9,16 @@
     "theme": "dark",
     "layout": "split_view"
   }
+=======
+{
+  "name": "Generador de Código AI",
+  "version": "0.1.0",
+  "description": "Sistema generador de código para sitios web",
+  "supported_languages": ["HTML", "CSS", "JavaScript", "Python", "PHP"],
+  "default_template": "basic_web",
+  "ui_config": {
+    "theme": "dark",
+    "layout": "split_view"
+  }
+>>>>>>> 90d22681d2c30acb385206e300b3ba63575d2b65
 }
