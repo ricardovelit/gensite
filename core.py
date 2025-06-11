@@ -9,6 +9,18 @@ Contiene la lógica principal para:
 """
 
 from supabase_handler import SupabaseHandler
+from fastapi import FastAPI, WebSocket
+from typing import Dict, List, Optional, Any
+import asyncio
+from enum import Enum
+import json
+
+class CodeGenerationEvent(str, Enum):
+    THINKING = "thinking"
+    WRITING = "writing"
+    ANALYZING = "analyzing"
+    COMPLETED = "completed"
+    ERROR = "error"
 
 class ProjectTemplate:
     """Clase base para plantillas de proyectos"""
@@ -144,3 +156,107 @@ class GeneradorCodigo:
         """
         self.iniciar_conversacion()
         return "# Código generado desde la conversación"
+
+class CodeGenerationManager:
+    def __init__(self):
+        self.active_sessions: Dict[str, List[WebSocket]] = {}
+        
+    async def connect(self, websocket: WebSocket, session_id: str):
+        await websocket.accept()
+        if session_id not in self.active_sessions:
+            self.active_sessions[session_id] = []
+        self.active_sessions[session_id].append(websocket)
+        
+    def disconnect(self, websocket: WebSocket, session_id: str):
+        if session_id in self.active_sessions:
+            if websocket in self.active_sessions[session_id]:
+                self.active_sessions[session_id].remove(websocket)
+            if not self.active_sessions[session_id]:
+                del self.active_sessions[session_id]
+                
+    async def broadcast_event(self, session_id: str, event_type: CodeGenerationEvent, data: Any):
+        if session_id in self.active_sessions:
+            message = {
+                "type": event_type,
+                "data": data,
+                "timestamp": asyncio.get_event_loop().time()
+            }
+            for connection in self.active_sessions[session_id]:
+                try:
+                    await connection.send_json(message)
+                except:
+                    await self.disconnect(connection, session_id)
+
+class CodeGenerator:
+    def __init__(self, events_manager: CodeGenerationManager):
+        self.events_manager = events_manager
+        
+    async def generate_code_with_streaming(self, session_id: str, prompt: str) -> str:
+        """
+        Genera código basado en el prompt del usuario, transmitiendo el proceso en tiempo real
+        """
+        try:
+            # Simular el proceso de pensamiento
+            await self.events_manager.broadcast_event(
+                session_id,
+                CodeGenerationEvent.THINKING,
+                {"message": "Analizando tu solicitud..."}
+            )
+            await asyncio.sleep(1)  # Simular tiempo de procesamiento
+            
+            # Simular el proceso de escritura
+            await self.events_manager.broadcast_event(
+                session_id,
+                CodeGenerationEvent.WRITING,
+                {"message": "Generando código..."}
+            )
+            
+            # Aquí iría la lógica real de generación de código
+            # Por ahora solo es un placeholder
+            generated_code = "// Código generado\n"
+            
+            # Simular el análisis final
+            await self.events_manager.broadcast_event(
+                session_id,
+                CodeGenerationEvent.ANALYZING,
+                {"message": "Verificando el código generado..."}
+            )
+            
+            # Enviar el código completado
+            await self.events_manager.broadcast_event(
+                session_id,
+                CodeGenerationEvent.COMPLETED,
+                {"code": generated_code}
+            )
+            
+            return generated_code
+            
+        except Exception as e:
+            await self.events_manager.broadcast_event(
+                session_id,
+                CodeGenerationEvent.ERROR,
+                {"error": str(e)}
+            )
+            raise
+
+# Configuración de la aplicación FastAPI
+app = FastAPI()
+code_gen_manager = CodeGenerationManager()
+code_generator = CodeGenerator(code_gen_manager)
+
+@app.websocket("/ws/{session_id}")
+async def websocket_endpoint(websocket: WebSocket, session_id: str):
+    await code_gen_manager.connect(websocket, session_id)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            request = json.loads(data)
+            if request.get("type") == "generate":
+                await code_generator.generate_code_with_streaming(
+                    session_id,
+                    request.get("prompt", "")
+                )
+    except Exception as e:
+        print(f"WebSocket error: {e}")
+    finally:
+        code_gen_manager.disconnect(websocket, session_id)

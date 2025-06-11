@@ -3,3 +3,27 @@
 # Ejemplo:
 # numpy==1.24.3
 # pandas==2.0.1
+
+# Dependencias principales
+fastapi==0.109.0
+uvicorn==0.27.0
+python-dotenv==1.0.0
+pydantic==2.5.3
+
+# Supabase y relacionados
+supabase==1.2.0
+httpx>=0.24.0,<0.26.0
+
+# Autenticación y seguridad
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Utilidades
+aiohttp==3.9.1
+
+# Herramientas de desarrollo
+pytest==7.4.4
+black==23.12.1
+isort==5.13.2
+mypy==1.8.0

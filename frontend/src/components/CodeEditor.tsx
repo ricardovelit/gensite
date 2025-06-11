@@ -32,11 +32,10 @@ export function CodeEditor({
         <Button 
           variant="contained" 
           startIcon={!isGenerating && <PlayArrowIcon />}
-          onClick={async () => {
+          onClick={() => {
             if (onGenerate && prompt) {
               setIsGenerating(true);
-              await onGenerate(prompt);
-              setIsGenerating(false);
+              onGenerate(prompt).finally(() => setIsGenerating(false));
             }
           }}
           onKeyDown={(e: KeyboardEvent) => {
@@ -44,8 +43,7 @@ export function CodeEditor({
               e.preventDefault();
               if (onGenerate && prompt && !isGenerating) {
                 setIsGenerating(true);
-                await onGenerate(prompt);
-                setIsGenerating(false);
+                onGenerate(prompt).finally(() => setIsGenerating(false));
               }
             }
           }}

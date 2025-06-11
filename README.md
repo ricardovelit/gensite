@@ -52,3 +52,44 @@ export default tseslint.config({
   },
 })
 ```
+
+# GENSITE AI Website Builder
+
+## Selección de modelo de IA para generación de código
+
+El backend soporta dos modelos de IA para la generación de proyectos React:
+
+- **gpt-4** (OpenAI, por defecto)
+- **deepseek-coder** (Deepseek, alternativo)
+
+### Uso por defecto (gpt-4)
+No necesitas definir ninguna variable de entorno. El backend usará gpt-4 automáticamente para generar el código.
+
+### Uso de Deepseek como alternativa
+Si quieres usar Deepseek, define las siguientes variables de entorno antes de iniciar el backend:
+
+#### En Windows PowerShell:
+```powershell
+$env:GENSITE_MODEL="deepseek-coder"
+$env:DEEPSEEK_API_KEY="tu_api_key_deepseek"
+```
+
+#### En Linux/MacOS:
+```bash
+export GENSITE_MODEL=deepseek-coder
+export DEEPSEEK_API_KEY=tu_api_key_deepseek
+```
+
+Luego inicia el backend normalmente (por ejemplo, con Uvicorn):
+```bash
+uvicorn main:app --reload
+```
+
+### Notas
+- Si no defines `GENSITE_MODEL`, el backend usará **gpt-4**.
+- Si defines `GENSITE_MODEL=deepseek-coder`, debes proporcionar también tu `DEEPSEEK_API_KEY`.
+- El modelo usado se muestra en la consola del backend con el log `[GENSITE][USING MODEL]: ...`.
+
+---
+
+¿Dudas? Consulta el código en `main.py` o pide ayuda en el chat de soporte.
